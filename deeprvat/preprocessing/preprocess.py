@@ -132,7 +132,7 @@ def add_variant_ids(
 
     if chromosomes is not None:
         logging.info(f"Filtering variants based on chromosomes. Keeping {chromosomes}")
-        chromosomes = [f"chr{chrom}" for chrom in chromosomes.split(",")]
+        chromosomes = chromosomes.split(",")
         variants = variants[variants["chrom"].isin(chromosomes)]
 
     duplicates = variants[variants.duplicated()]
