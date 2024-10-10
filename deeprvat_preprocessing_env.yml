@@ -1,4 +1,4 @@
-name: deeprvat_preprocess
+name: deeprvat_preprocess_nochr
 channels:
   - conda-forge
   - bioconda
