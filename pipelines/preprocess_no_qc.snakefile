@@ -15,7 +15,7 @@ rule preprocess:
         samples=rules.extract_samples.output,
         sparse_tg=expand(rules.sparsify.output.tsv, vcf_stem=vcf_stems),
     output:
-        expand(preprocessed_dir / "genotypes_chr{chr}.h5", chr=chromosomes),
+        expand(preprocessed_dir / "genotypes_{chr}.h5", chr=chromosomes),
     shell:
         " ".join(
             [
