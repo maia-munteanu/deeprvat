@@ -53,7 +53,8 @@ def process_sparse_gt_file(
 ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     sparse_gt = pd.read_table(
         file,
-        names=["chrom", "pos", "ref", "alt", "sample", "gt"], dtype={'chrom': 'str', 'pos': 'float64', 'ref': 'str', 'alt': 'str', 'gt': 'str'}
+        names=["chrom", "pos", "ref", "alt", "sample", "gt"], 
+        dtype={'chrom': 'str', 'pos': 'float64', 'ref': 'str', 'alt': 'str', 'gt': 'str'},
         engine="pyarrow",
         index_col=None,
     )
