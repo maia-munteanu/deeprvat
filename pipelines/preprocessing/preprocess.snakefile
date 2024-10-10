@@ -42,7 +42,7 @@ chromosomes = config["included_chromosomes"]
 rule combine_genotypes:
     input:
         expand(
-            preprocessed_dir / "genotypes_chr{chr}.h5",
+            preprocessed_dir / "genotypes_{chr}.h5",
             chr=chromosomes,
         ),
     output:
