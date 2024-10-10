@@ -127,7 +127,7 @@ def add_variant_ids(
     chromosomes: Optional[str] = None,
 ):
     variants = pd.read_csv(
-        variant_file, sep="\t", names=["chrom", "pos", "ref", "alt"], index_col=False
+        variant_file, sep="\t", names=["chrom", "pos", "ref", "alt"], index_col=False, dtype={'chrom': 'str', 'pos': 'float64', 'ref': 'str', 'alt': 'str'}
     )
 
     if chromosomes is not None:
