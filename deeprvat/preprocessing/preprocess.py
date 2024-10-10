@@ -253,7 +253,7 @@ def process_sparse_gt(
     start_time = time.time()
     variants = pd.read_parquet(variant_file, engine="pyarrow")
     if chromosomes is not None:
-        chromosomes = [f"chr{chrom}" for chrom in chromosomes.split(",")]
+        chromosomes = chromosomes.split(",")
         variants = variants[variants["chrom"].isin(chromosomes)]
 
     total_variants = len(variants)
@@ -367,7 +367,7 @@ def process_sparse_gt(
                                 c,
                                 names=["chrom", "pos", "ref", "alt", "sample"],
                                 sep="\t",
-                                index_col=None,
+                                index_col=None, dtype={'chrom': 'str', 'pos': 'float64', 'ref': 'str', 'alt': 'str', 'sample': 'str'}
                             )
                             for c in tqdm(
                                 exclude_call_files,
