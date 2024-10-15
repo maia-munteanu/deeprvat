@@ -36,7 +36,7 @@ rule preprocess:
                 f"--exclude-calls {qc_read_depth_dir}",
                 f"--exclude-samples {qc_filtered_samples_dir}",
                 "--chromosomes ",
-                ",".join(str(chr) for chr in set(chromosomes)),
+                ",".join(map(str, set(chromosomes))),
                 "{input.variants_parquet}",
                 "{input.samples}",
                 f"{sparse_dir}",
