@@ -23,7 +23,7 @@ rule preprocess:
                 "process-sparse-gt",
                 f"--exclude-variants {qc_duplicate_vars_dir}",
                 "--chromosomes ",
-                ",".join(str(chr) for chr in set(chromosomes)),
+                ",".join(map(str, set(chromosomes))),
                 "{input.variants_parquet}",
                 "{input.samples}",
                 f"{sparse_dir}",
