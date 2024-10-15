@@ -23,7 +23,7 @@ rule preprocess:
         ),
         qc_indmiss_samples=rules.process_individual_missingness.output,
     output:
-        expand(preprocessed_dir / "genotypes_chr{chr}.h5", chr=chromosomes),
+        expand(preprocessed_dir / "genotypes_{chr}.h5", chr=chromosomes),
     shell:
         " ".join(
             [
