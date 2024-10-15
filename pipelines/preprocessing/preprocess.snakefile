@@ -125,7 +125,7 @@ rule add_variant_ids:
     resources:
         mem_mb=2048,
     shell:
-        f"""{preprocessing_cmd} add-variant-ids --chromosomes {','.join(str(chr) for chr in set(chromosomes))} \
+        f"""{preprocessing_cmd} add-variant-ids --chromosomes {','.join(map(str, set(chromosomes)))} \
             {{input}} {{output.variants}} {{output.duplicates}} """
 
 
@@ -138,5 +138,5 @@ rule create_parquet_variant_ids:
     resources:
         mem_mb=2048,
     shell:
-        f"""{preprocessing_cmd} add-variant-ids --chromosomes {','.join(str(chr) for chr in set(chromosomes))} \
+        f"""{preprocessing_cmd} add-variant-ids --chromosomes {','.join(map(str, set(chromosomes)))} \
          {{input}} {{output.variants}} {{output.duplicates}}"""
