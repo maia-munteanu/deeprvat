@@ -9,7 +9,7 @@ rule deepSea:
     resources:
         mem_mb=lambda wildcards, attempt: 5_000 * (attempt + 1),
     conda:
-        "kipoi-veff2"
+        "/g/strcombio/fsupek_home/mmunteanu/tools/miniforge3/envs/kipoi-veff2"
     shell:
         "kipoi_veff2_predict {input.variants} {input.fasta} {output} -l 1000 -m 'DeepSEA/predict' -s 'diff'"
 
