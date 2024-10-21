@@ -1173,6 +1173,7 @@ def calculate_scores_max(scores):
         return None
     else:
         # Split the string and extract values from index 1 to 5
+        print(f"Processing scores: {scores}, type: {type(scores)}")
         values = [float(score) for score in scores.split("|")[1:5] if score != "nan"]
         # Calculate the sum
         if len(values) > 0:
