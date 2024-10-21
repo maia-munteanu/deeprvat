@@ -77,7 +77,7 @@ rule download_splicemaps:
     conda:
         "./absplice.yaml"
     shell:
-        "timeout 3600 splicemap_download --version {params.version} --splicemap_dir {params.dirname} --tissues {wildcards.tissue}"
+        "timeout 15000 splicemap_download --version {params.version} --splicemap_dir {params.dirname} --tissues {wildcards.tissue}"
 
 
 list_outputs.append(
@@ -111,7 +111,7 @@ if absplice_main_conf["use_rocksdb"] == True:
                 / config_download["spliceai_rocksdb"][genome]
             ),
         shell:
-            "timeout 3600 spliceai_rocksdb_download --version {params.version} --db_path {output.spliceai_rocksdb} --chromosome {wildcards.chromosome}"
+            "timeout 15000 spliceai_rocksdb_download --version {params.version} --db_path {output.spliceai_rocksdb} --chromosome {wildcards.chromosome}"
 
     list_outputs.append(
         expand(
