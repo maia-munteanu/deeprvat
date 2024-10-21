@@ -31,3 +31,5 @@ additional_vep_plugin_cmds:
   primateAI : PrimateAI,annotation_data/primateAI/PrimateAI_scores_v0.2_GRCh38_sorted.tsv.bgz
   condel: Condel,repo_dir/ensembl-vep/Plugin/config/Condel/config,s,2
   alphamissense : AlphaMissense,file=annotation_data/AlphaMissense/AlphaMissense_hg38.tsv.gz
+
+deepsea_pca_n_components : 14
