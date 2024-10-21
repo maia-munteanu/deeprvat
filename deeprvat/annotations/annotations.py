@@ -1169,7 +1169,7 @@ def deepripe_score_variant_onlyseq_all(
 
 
 def calculate_scores_max(scores):
-    if scores is None:
+    if scores is None or (isinstance(scores, float) and np.isnan(scores)):
         return None
     else:
         # Split the string and extract values from index 1 to 5
