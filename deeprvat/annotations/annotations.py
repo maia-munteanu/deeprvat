@@ -1784,7 +1784,7 @@ def process_vep(
     )
     if "SpliceAI_pred" in vep_file.columns:
         vep_file["SpliceAI_delta_score"] = vep_file["SpliceAI_pred"].apply(
-            calculate_scores_max
+            lambda val: calculate_scores_max(val) if pd.notna(val) else np.NaN
         )
 
     if "Consequence" in vep_file.columns:
