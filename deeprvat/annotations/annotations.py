@@ -1169,17 +1169,17 @@ def deepripe_score_variant_onlyseq_all(
 
 
 def calculate_scores_max(scores):
-    if scores is None or (isinstance(scores, float) and np.isnan(scores)):
-        return None
+    # calculationg spliceai delta scores out of SpliceAI_pred output, by splitting value on '|' and calculating max out of DS_AG, DS_AL, DS_DG, DS_DL (values 2 to 5)
+    values = [
+        float(score)
+        for score in scores.split("|")[1:5]
+        if score != "-" and score != "nan"
+    ]
+    # Calculate the max
+    if len(values) > 0:
+        return np.max(values)
     else:
-        # Split the string and extract values from index 1 to 5
-        print(f"Processing scores: {scores}, type: {type(scores)}")
-        values = [float(score) for score in scores.split("|")[1:5] if score != "nan"]
-        # Calculate the sum
-        if len(values) > 0:
-            return np.max(values)
-        else:
-            return np.NaN
+        return np.NaN
 
 
 @cli.command()
