@@ -1224,6 +1224,11 @@ def merge_abscores(
     all_absplice_scores = all_absplice_scores[
         ["chrom", "pos", "ref", "alt", "gene_id", "AbSplice_DNA"]
     ]
+
+    print(all_absplice_scores.columns.tolist())
+    print(all_absplice_scores.head(1))
+    print(all_absplice_scores.dtypes)
+
     all_absplice_scores['gene_id'] = all_absplice_scores['gene_id'].astype(str)
     all_absplice_scores = all_absplice_scores.rename(columns={"gene_id": "Gene"})
 
@@ -1232,6 +1237,12 @@ def merge_abscores(
     annotations = pd.read_parquet(current_annotation_file, engine="pyarrow").drop(
         columns=["AbSplice_DNA"], errors="ignore"
     )
+
+
+    print(annotations.columns.tolist())
+    print(annotations.head(1))
+    print(annotations.dtypes)
+    
     annotations['gene_id'] = annotations['gene_id'].astype(str)
     annotations = annotations.rename(columns={"gene_id": "Gene"})
 
