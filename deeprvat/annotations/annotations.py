@@ -1019,6 +1019,10 @@ def process_chunk(
 
     ab_splice_res["pos"] = ab_splice_res["pos"].astype(int)
     logger.info(f"Number of rows of ab_splice df {len(ab_splice_res)}")
+    
+    print("AbSplice results dtypes:", ab_splice_res[["gene_id", "chrom", "pos", "ref", "alt"]].dtypes)
+    print("Annotations dtypes:", ca_shortened[["gene_id", "chrom", "pos", "ref", "alt"]].dtypes)
+    
     merged = ab_splice_res.merge(
         ca_shortened, how="left", on=["chrom", "pos", "ref", "alt", "gene_id"]
     )
@@ -1075,6 +1079,7 @@ def aggregate_abscores(
             columns={"AbSplice_DNA": "AbSplice_DNA_old"}
         )
     ca_shortened = current_annotations[["id", "gene_id", "chrom", "pos", "ref", "alt"]]
+    #ca_shortened = ca_shortened.rename(columns={"Gene": "gene_id"})
     ca_shortened['gene_id'] = ca_shortened['gene_id'].astype(str)
 
     logger.info(ca_shortened.columns)
@@ -1211,15 +1216,20 @@ def merge_abscores(
     $ python annotations.py merge_abscores current_annotation.parquet absplice_scores.parquet merged_annotations.parquet
     """
     all_absplice_scores = pd.read_parquet(absplice_score_file)
-
     all_absplice_scores = all_absplice_scores[
         ["chrom", "pos", "ref", "alt", "gene_id", "AbSplice_DNA"]
     ]
+    all_absplice_scores['gene_id'] = all_absplice_scores['gene_id'].astype(str)
+    all_absplice_scores = all_absplice_scores.rename(columns={"gene_id": "Gene"})
+
+
 
     annotations = pd.read_parquet(current_annotation_file, engine="pyarrow").drop(
         columns=["AbSplice_DNA"], errors="ignore"
     )
-    all_absplice_scores = all_absplice_scores.rename(columns={"gene_id": "Gene"})
+    annotations['gene_id'] = annotations['gene_id'].astype(str)
+    annotations = annotations.rename(columns={"gene_id": "Gene"})
+
     annotations.drop_duplicates(inplace=True, subset=["Gene", "id"])
     original_len = len(annotations)
     all_ids = set(annotations.id)
