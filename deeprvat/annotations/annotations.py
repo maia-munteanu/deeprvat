@@ -1074,7 +1074,7 @@ def aggregate_abscores(
         current_annotations = current_annotations.rename(
             columns={"AbSplice_DNA": "AbSplice_DNA_old"}
         )
-    ca_shortened = current_annotations[["id", "Gene", "gene_id", "pos", "ref", "alt"]]
+    ca_shortened = current_annotations[["id", "gene_id", "chrom", "pos", "ref", "alt"]]
     ca_shortened['gene_id'] = ca_shortened['gene_id'].astype(str)
 
     logger.info(ca_shortened.columns)
