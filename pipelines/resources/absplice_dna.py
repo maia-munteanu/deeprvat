@@ -1,5 +1,5 @@
 from absplice import SplicingOutlierResult
-import snakemake
+#import snakemake
 
 splicing_result = SplicingOutlierResult(
     df_mmsplice=snakemake.input["mmsplice_splicemap"],
