@@ -1019,10 +1019,6 @@ def process_chunk(
 
     ab_splice_res["pos"] = ab_splice_res["pos"].astype(int)
     logger.info(f"Number of rows of ab_splice df {len(ab_splice_res)}")
-    
-    print("AbSplice results dtypes:", ab_splice_res[["gene_id", "chrom", "pos", "ref", "alt"]].dtypes)
-    print("Annotations dtypes:", ca_shortened[["gene_id", "chrom", "pos", "ref", "alt"]].dtypes)
-    
     merged = ab_splice_res.merge(
         ca_shortened, how="left", on=["chrom", "pos", "ref", "alt", "gene_id"]
     )
@@ -1078,10 +1074,8 @@ def aggregate_abscores(
         current_annotations = current_annotations.rename(
             columns={"AbSplice_DNA": "AbSplice_DNA_old"}
         )
-
     ca_shortened = current_annotations[["id", "Gene", "chrom", "pos", "ref", "alt"]]
     ca_shortened = ca_shortened.rename(columns={"Gene": "gene_id"})
-    ca_shortened['gene_id'] = ca_shortened['gene_id'].astype(str)
 
     logger.info(ca_shortened.columns)
 
@@ -1217,19 +1211,16 @@ def merge_abscores(
     $ python annotations.py merge_abscores current_annotation.parquet absplice_scores.parquet merged_annotations.parquet
     """
     all_absplice_scores = pd.read_parquet(absplice_score_file)
+
     all_absplice_scores = all_absplice_scores[
         ["chrom", "pos", "ref", "alt", "gene_id", "AbSplice_DNA"]
     ]
 
-    all_absplice_scores['gene_id'] = all_absplice_scores['gene_id'].astype(str)
-    all_absplice_scores = all_absplice_scores.rename(columns={"gene_id": "Gene"})
-
     annotations = pd.read_parquet(current_annotation_file, engine="pyarrow").drop(
         columns=["AbSplice_DNA"], errors="ignore"
     )
-    annotations['Gene'] = annotations['Gene'].astype(str)
+    all_absplice_scores = all_absplice_scores.rename(columns={"gene_id": "Gene"})
     annotations.drop_duplicates(inplace=True, subset=["Gene", "id"])
-    
     original_len = len(annotations)
     all_ids = set(annotations.id)
     all_absplice_scores.drop_duplicates(
@@ -1950,21 +1941,7 @@ def merge_af(annotations_path: str, af_df_path: str, out_file: str):
     - out_file (str): Path to the output file to save merged data.
     """
     annotations_df = pd.read_parquet(annotations_path)
-    print(f"Annotations columns: {annotations_df.columns.tolist()}")
-    print(annotations_df.head())
-
-    if 'af' in annotations_df.columns:
-        annotations_df = annotations_df.drop('af', axis=1)
-        print("Removed existing af column from annotations")
-    
     af_df = pd.read_parquet(af_df_path)
-    print(f"AF columns: {af_df.columns.tolist()}")
-    print(af_df.head())
-    
-    # Check for overlapping columns
-    common_cols = set(annotations_df.columns) & set(af_df.columns)
-    print(f"\nOverlapping columns between datasets: {common_cols}")
-
     merged_df = annotations_df.merge(af_df, how="left", on="id")
     merged_df.to_parquet(out_file)
 
