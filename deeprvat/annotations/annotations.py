@@ -1952,6 +1952,10 @@ def merge_af(annotations_path: str, af_df_path: str, out_file: str):
     annotations_df = pd.read_parquet(annotations_path)
     print(f"Annotations columns: {annotations_df.columns.tolist()}")
     print(annotations_df.head())
+
+    if 'af' in annotations_df.columns:
+        annotations_df = annotations_df.drop('af', axis=1)
+        print("Removed existing af column from annotations")
     
     af_df = pd.read_parquet(af_df_path)
     print(f"AF columns: {af_df.columns.tolist()}")
@@ -1961,9 +1965,6 @@ def merge_af(annotations_path: str, af_df_path: str, out_file: str):
     common_cols = set(annotations_df.columns) & set(af_df.columns)
     print(f"\nOverlapping columns between datasets: {common_cols}")
 
-    
-    #annotations_df = pd.read_parquet(annotations_path)
-    #af_df = pd.read_parquet(af_df_path)
     merged_df = annotations_df.merge(af_df, how="left", on="id")
     merged_df.to_parquet(out_file)
 
