@@ -1949,8 +1949,21 @@ def merge_af(annotations_path: str, af_df_path: str, out_file: str):
     - af_df_path (str): Path to the allele frequency DataFrame file.
     - out_file (str): Path to the output file to save merged data.
     """
+    print("Loading annotations file...")
     annotations_df = pd.read_parquet(annotations_path)
+    print(f"Annotations columns: {annotations_df.columns.tolist()}")
+    
+    print("\nLoading AF file...")
     af_df = pd.read_parquet(af_df_path)
+    print(f"AF columns: {af_df.columns.tolist()}")
+    
+    # Check for overlapping columns
+    common_cols = set(annotations_df.columns) & set(af_df.columns)
+    print(f"\nOverlapping columns between datasets: {common_cols}")
+
+    
+    #annotations_df = pd.read_parquet(annotations_path)
+    #af_df = pd.read_parquet(af_df_path)
     merged_df = annotations_df.merge(af_df, how="left", on="id")
     merged_df.to_parquet(out_file)
 
